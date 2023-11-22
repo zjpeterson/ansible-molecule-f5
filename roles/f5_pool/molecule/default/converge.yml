@@ -1,0 +1,25 @@
+---
+- name: Converge
+  hosts: bigip
+  gather_facts: false
+  connection: local
+  vars:
+    pool_name: test_pool
+    pool_monitors:
+      - http
+    pool_members:
+      - name: web1
+        address: "{{ hostvars.web1.ansible_host }}"
+        port: 80
+      - name: web2
+        address: "{{ hostvars.web2.ansible_host }}"
+        port: 80
+    ltm_provider:
+      server: "{{ ansible_host }}"
+      server_port: 8443
+      user: admin
+      password: "{{ lookup('ansible.builtin.file', lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') + '/admin_password') }}"
+      validate_certs: false
+      no_f5_teem: true
+  roles:
+    - f5_pool

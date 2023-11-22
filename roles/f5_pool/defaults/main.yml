@@ -1,0 +1,19 @@
+---
+pool_name: mypool
+pool_lb_method: round-robin
+pool_monitors:
+  - http
+pool_members:
+  - name: node1
+    address: 1.1.1.1
+    port: 80
+  - name: node2
+    address: 1.1.1.2
+    port: 80
+ltm_provider:
+  server: "{{ ansible_host }}"
+  server_port: 8443
+  user: admin
+  password: password
+  validate_certs: false
+  no_f5_teem: true

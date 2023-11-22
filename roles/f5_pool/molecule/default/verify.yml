@@ -1,0 +1,30 @@
+---
+- name: Verify
+  hosts: bigip
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Get device info
+      f5networks.f5_modules.bigip_device_info:
+        gather_subset:
+          - ltm-pools
+        provider:
+          server: "{{ ansible_host }}"
+          server_port: 8443
+          user: admin
+          password: "{{ lookup('ansible.builtin.file', lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') + '/admin_password') }}"
+          validate_certs: false
+          no_f5_teem: true
+
+    - name: Validate member state
+      ansible.builtin.assert:
+        that: item.real_state == 'up'
+        success_msg: Test pool member {{ item.name }} at {{ item.address }} is up
+        fail_msg: Test pool member {{ item.name }} at {{ item.address }} is not up
+      loop: "{{ ansible_net_ltm_pools.0.members }}"
+
+    - name: Validate pool state
+      ansible.builtin.assert:
+        that: ansible_net_ltm_pools.0.availability_status == 'available'
+        success_msg: Test pool is available
+        fail_msg: Test pool is not available

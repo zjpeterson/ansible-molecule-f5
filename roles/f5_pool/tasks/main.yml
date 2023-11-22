@@ -1,0 +1,16 @@
+---
+- name: Create pool
+  f5networks.f5_modules.bigip_pool:
+    name: "{{ pool_name }}"
+    lb_method: "{{ pool_lb_method }}"
+    monitors: "{{ pool_monitors }}"
+    provider: "{{ ltm_provider }}"
+
+- name: Create pool members
+  f5networks.f5_modules.bigip_pool_member:
+    pool: "{{ pool_name }}"
+    name: "{{ item.name }}"
+    host: "{{ item.address }}"
+    port: "{{ item.port }}"
+    provider: "{{ ltm_provider }}"
+  loop: "{{ pool_members }}"

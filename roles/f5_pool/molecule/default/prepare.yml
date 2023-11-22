@@ -1,0 +1,29 @@
+---
+- name: Prepare web servers
+  hosts: web
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Install apache
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+
+    - name: Start apache
+      ansible.builtin.service:
+        name: httpd
+        state: started
+
+- name: Prepare BIG-IP
+  hosts: bigip
+  gather_facts: false
+  tasks:
+    - name: Determine a password
+      ansible.builtin.set_fact:
+        admin_password: >-
+          {{ lookup('ansible.builtin.password',
+          lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') + '/admin_password',
+          length=10, chars=['ascii_letters', 'digits']) }}
+
+    - name: Configure web user password
+      ansible.builtin.raw: modify auth user admin password {{ admin_password }} # noqa: no-changed-when
