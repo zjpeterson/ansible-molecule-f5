@@ -3,11 +3,13 @@ driver:
   name: ec2 # https://github.com/ansible-community/molecule-plugins/tree/main/doc/ec2
 platforms: 
   - name: bigip
+    tags:
+      Name: molecule_bigip
     region: us-east-2
     image: ami-0e6d5be8d438c6333 # F5 BIGIP-14.1.5.6-0.12.6 PAYG-Good 25Mbps
     instance_type: m5.xlarge
-    vpc_id: vpc-0593d4a257abbede6
-    vpc_subnet_id: subnet-01be05574e5a42bdd
+    vpc_id: vpc-01356fcb3a33b1323
+    vpc_subnet_id: subnet-0a4e4583da98e4db9
     assign_public_ip: true
     key_inject_method: ec2
     boot_wait_seconds: 120
@@ -24,11 +26,13 @@ platforms:
   - name: web1
     groups:
      - web
+    tags:
+      Name: molecule_web1
     region: us-east-2
     image: ami-0931978297f275f71 # RHEL 9.2
     instance_type: t2.micro
-    vpc_id: vpc-0593d4a257abbede6
-    vpc_subnet_id: subnet-01be05574e5a42bdd
+    vpc_id: vpc-01356fcb3a33b1323
+    vpc_subnet_id: subnet-0a4e4583da98e4db9
     assign_public_ip: true
     key_inject_method: ec2
     boot_wait_seconds: 30
@@ -45,11 +49,13 @@ platforms:
   - name: web2
     groups:
      - web
+    tags:
+      Name: molecule_web2
     region: us-east-2
     image: ami-0931978297f275f71 # RHEL 9.2
     instance_type: t2.micro
-    vpc_id: vpc-0593d4a257abbede6
-    vpc_subnet_id: subnet-01be05574e5a42bdd
+    vpc_id: vpc-01356fcb3a33b1323
+    vpc_subnet_id: subnet-0a4e4583da98e4db9
     assign_public_ip: true
     key_inject_method: ec2
     boot_wait_seconds: 30
