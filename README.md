@@ -6,6 +6,8 @@ Prerequisites to running this:
 * Have Molecule installed
 * Have AWS credentials available in environment
 * In your AWS environment, you need to already have a VPC and subnet created that you want to use for this. These details go into `molecule.yml`.
+* Activate an F5 trial: https://aws.amazon.com/marketplace/pp?sku=8esk90vx7v713sa0muq2skw3j
+* If desired: `export XDG_CACHE_HOME=/tmp`
 
 Running a test:
 * `cd roles/f5_pool`
